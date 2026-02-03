@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { getFeaturedWeapons, weapons } from '@/lib/data/weapons';
 import { CATEGORY_CONFIG, WeaponCategory, COUNTRIES } from '@/lib/types/weapon';
@@ -134,22 +135,32 @@ export default function HomePage() {
                 href={`/${weapon.category}/${weapon.slug}`}
                 className="group bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden hover:border-military-gold/50 transition-all weapon-card-glow"
               >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <span className="px-2 py-1 text-[10px] font-mono uppercase bg-military-gold/10 text-military-gold rounded">
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={weapon.imageUrl}
+                    alt={weapon.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="px-2 py-1 text-[10px] font-mono uppercase bg-black/70 text-military-gold rounded backdrop-blur-sm">
                       {weapon.subcategory.replace('-', ' ')}
                     </span>
-                    <span className="text-xl" title={country.name}>
-                      {country.flag}
-                    </span>
                   </div>
+                  <span className="absolute top-3 right-3 text-xl drop-shadow-lg" title={country.name}>
+                    {country.flag}
+                  </span>
+                </div>
+                <div className="p-5">
                   <h3 className="font-display text-xl text-white tracking-wider group-hover:text-military-gold transition-colors">
                     {weapon.name}
                   </h3>
                   <p className="text-xs text-gray-600 font-mono mt-1">
                     {weapon.manufacturer} &middot; {weapon.yearIntroduced}
                   </p>
-                  <p className="text-sm text-gray-400 mt-4 line-clamp-2">
+                  <p className="text-sm text-gray-400 mt-3 line-clamp-2">
                     {weapon.history.overview}
                   </p>
                   <p className="text-xs text-military-gold/60 font-mono mt-4 group-hover:text-military-gold transition-colors">

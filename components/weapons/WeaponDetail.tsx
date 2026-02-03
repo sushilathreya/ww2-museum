@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Weapon, COUNTRIES, GunSpecs, TankSpecs, PlaneSpecs, NavalSpecs } from '@/lib/types/weapon';
 
@@ -54,6 +55,19 @@ export function WeaponDetail({ weapon }: WeaponDetailProps) {
             {weapon.yearRetired ? `–${weapon.yearRetired}` : ''}
           </span>
         </div>
+      </div>
+
+      {/* Weapon Image */}
+      <div className="mb-6 relative h-[350px] rounded-lg overflow-hidden">
+        <Image
+          src={weapon.imageUrl}
+          alt={weapon.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 900px"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
       </div>
 
       {/* 3D Viewer */}
