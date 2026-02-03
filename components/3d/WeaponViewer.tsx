@@ -36,7 +36,7 @@ interface WeaponViewerProps {
 
 export function WeaponViewer({ modelUrl, weaponName }: WeaponViewerProps) {
   return (
-    <div className="w-full h-[500px] bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden relative">
+    <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden relative">
       <Canvas camera={{ position: [0, 0, 8], fov: 50 }} dpr={[1, 2]}>
         <Suspense fallback={<Loader />}>
           <Stage
@@ -57,11 +57,11 @@ export function WeaponViewer({ modelUrl, weaponName }: WeaponViewerProps) {
       </Canvas>
 
       {/* Controls overlay */}
-      <div className="absolute bottom-4 left-4 text-xs text-gray-500 font-mono">
+      <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 text-[10px] sm:text-xs text-gray-500 font-mono hidden sm:block">
         DRAG: Rotate &middot; SCROLL: Zoom &middot; SHIFT+DRAG: Pan
       </div>
 
-      <div className="absolute top-4 right-4 text-xs text-military-gold/60 font-mono uppercase">
+      <div className="absolute top-3 sm:top-4 right-3 sm:right-4 text-[10px] sm:text-xs text-military-gold/60 font-mono uppercase">
         3D Model &middot; {weaponName}
       </div>
     </div>
@@ -93,7 +93,7 @@ function PlaceholderModel() {
 
 export function WeaponViewerPlaceholder({ weaponName }: { weaponName: string }) {
   return (
-    <div className="w-full h-[400px] bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden relative">
+    <div className="w-full h-[250px] sm:h-[320px] md:h-[400px] bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden relative">
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }} dpr={[1, 2]}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} />

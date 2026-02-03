@@ -51,8 +51,8 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
   return (
     <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-display text-4xl text-white tracking-wider stencil-text">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="font-display text-3xl sm:text-4xl text-white tracking-wider stencil-text">
           {title}
         </h1>
         {subtitle && (
@@ -61,7 +61,7 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-6 mb-8 pb-6 border-b border-gray-800">
+      <div className="flex flex-wrap gap-4 sm:gap-6 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-800">
         {/* Subcategory Filter */}
         {subcategories.length > 0 && (
           <div>
@@ -141,7 +141,7 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
       </p>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredWeapons.map((weapon) => (
           <WeaponCard key={weapon.id} weapon={weapon} />
         ))}

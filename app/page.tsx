@@ -18,11 +18,11 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#0a0a0a]">
       {/* Hero Section */}
       <section className="relative border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32">
           <p className="text-military-gold font-mono text-sm tracking-[0.3em] mb-4">
             INTERACTIVE MUSEUM
           </p>
-          <h1 className="font-display text-6xl md:text-8xl text-white tracking-wider stencil-text leading-none">
+          <h1 className="font-display text-5xl sm:text-6xl md:text-8xl text-white tracking-wider stencil-text leading-none">
             WW2
             <br />
             ARSENAL
@@ -32,7 +32,7 @@ export default function HomePage() {
             legendary tanks, fighter planes, and warships — each with interactive 3D
             models and detailed historical data.
           </p>
-          <div className="flex gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <Link
               href="/guns"
               className="px-6 py-3 bg-military-gold text-black font-mono text-sm uppercase tracking-wider rounded hover:bg-military-gold-light transition-colors"
@@ -48,7 +48,7 @@ export default function HomePage() {
           </div>
 
           {/* Stats */}
-          <div className="flex gap-12 mt-16 pt-8 border-t border-gray-800/50">
+          <div className="flex gap-8 sm:gap-12 mt-12 sm:mt-16 pt-8 border-t border-gray-800/50">
             <div>
               <p className="font-display text-3xl text-military-gold">{weapons.length}</p>
               <p className="text-xs font-mono text-gray-600 mt-1">WEAPONS</p>
@@ -71,7 +71,7 @@ export default function HomePage() {
       </section>
 
       {/* Categories Section */}
-      <section id="categories" className="max-w-6xl mx-auto px-6 py-20">
+      <section id="categories" className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
         <h2 className="font-display text-3xl text-white tracking-wider stencil-text mb-2">
           CATEGORIES
         </h2>
@@ -79,7 +79,7 @@ export default function HomePage() {
           SELECT A CATEGORY TO EXPLORE
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {(Object.keys(CATEGORY_CONFIG) as WeaponCategory[]).map((key) => {
             const config = CATEGORY_CONFIG[key];
             const count = weapons.filter((w) => w.category === key).length;
@@ -88,7 +88,7 @@ export default function HomePage() {
               <Link
                 key={key}
                 href={`/${key}`}
-                className="group p-6 bg-gray-900/50 border border-gray-800 rounded-lg hover:border-military-gold/50 transition-all weapon-card-glow"
+                className="group p-4 sm:p-6 bg-gray-900/50 border border-gray-800 rounded-lg hover:border-military-gold/50 transition-all weapon-card-glow"
               >
                 <span className="text-3xl">{categoryIcons[key]}</span>
                 <h3 className="font-display text-2xl text-white mt-4 tracking-wider group-hover:text-military-gold transition-colors">
@@ -119,7 +119,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Weapons */}
-      <section className="max-w-6xl mx-auto px-6 py-20 border-t border-gray-800/50">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 border-t border-gray-800/50">
         <h2 className="font-display text-3xl text-white tracking-wider stencil-text mb-2">
           FEATURED
         </h2>
@@ -127,7 +127,7 @@ export default function HomePage() {
           ICONIC WEAPONS OF WORLD WAR II
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {featured.slice(0, 6).map((weapon) => {
             const country = COUNTRIES[weapon.country];
             return (
@@ -176,7 +176,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="border-t border-gray-800 py-10">
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           <div>
             <p className="font-display text-lg text-military-gold tracking-wider">
               WW2 ARSENAL

@@ -8,12 +8,12 @@ import { assetPath } from '@/lib/utils';
 
 const WeaponViewerPlaceholder = dynamic(
   () => import('@/components/3d/WeaponViewer').then((m) => m.WeaponViewerPlaceholder),
-  { ssr: false, loading: () => <div className="w-full h-[400px] bg-gray-900 rounded-lg animate-pulse" /> },
+  { ssr: false, loading: () => <div className="w-full h-[250px] sm:h-[400px] bg-gray-900 rounded-lg animate-pulse" /> },
 );
 
 const WeaponViewer = dynamic(
   () => import('@/components/3d/WeaponViewer').then((m) => m.WeaponViewer),
-  { ssr: false, loading: () => <div className="w-full h-[500px] bg-gray-900 rounded-lg animate-pulse" /> },
+  { ssr: false, loading: () => <div className="w-full h-[300px] sm:h-[500px] bg-gray-900 rounded-lg animate-pulse" /> },
 );
 
 interface WeaponDetailProps {
@@ -36,18 +36,18 @@ export function WeaponDetail({ weapon }: WeaponDetailProps) {
 
       {/* Title Section */}
       <div className="mb-8">
-        <div className="flex items-center gap-4 mb-2">
-          <span className="text-3xl" title={country.name}>
+        <div className="flex items-center gap-3 sm:gap-4 mb-2">
+          <span className="text-2xl sm:text-3xl" title={country.name}>
             {country.flag}
           </span>
-          <div>
-            <h1 className="font-display text-4xl md:text-5xl text-white tracking-wider stencil-text">
+          <div className="min-w-0">
+            <h1 className="font-display text-2xl sm:text-4xl md:text-5xl text-white tracking-wider stencil-text">
               {weapon.name}
             </h1>
-            <p className="text-sm font-mono text-gray-500 mt-1">{weapon.designation}</p>
+            <p className="text-xs sm:text-sm font-mono text-gray-500 mt-1 truncate">{weapon.designation}</p>
           </div>
         </div>
-        <div className="flex items-center gap-4 mt-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-4">
           <span className="px-3 py-1 text-xs font-mono uppercase bg-military-gold/15 text-military-gold border border-military-gold/30 rounded">
             {weapon.subcategory.replace('-', ' ')}
           </span>
@@ -59,7 +59,7 @@ export function WeaponDetail({ weapon }: WeaponDetailProps) {
       </div>
 
       {/* Weapon Image */}
-      <div className="mb-6 relative h-[350px] rounded-lg overflow-hidden">
+      <div className="mb-6 relative h-[200px] sm:h-[280px] md:h-[350px] rounded-lg overflow-hidden">
         <Image
           src={assetPath(weapon.imageUrl)}
           alt={weapon.name}
@@ -142,10 +142,10 @@ function SpecsTable({ weapon }: { weapon: Weapon }) {
       <tbody>
         {rows.map(([label, value], i) => (
           <tr key={label} className={i % 2 === 0 ? 'bg-gray-800/30' : ''}>
-            <td className="px-4 py-3 text-xs font-mono text-gray-500 uppercase w-1/3">
+            <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-[10px] sm:text-xs font-mono text-gray-500 uppercase w-1/3">
               {label}
             </td>
-            <td className="px-4 py-3 text-sm text-gray-300 font-mono">{value}</td>
+            <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-gray-300 font-mono">{value}</td>
           </tr>
         ))}
       </tbody>

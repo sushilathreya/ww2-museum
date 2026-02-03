@@ -11,22 +11,51 @@ const categoryIcons: Record<WeaponCategory, string> = {
   naval: '⚓',
 };
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeSub = searchParams.get('sub');
 
   return (
-    <aside className="w-64 bg-military-black border-r border-gray-800 h-screen sticky top-0 overflow-y-auto flex flex-col">
-      {/* Logo */}
-      <Link href="/" className="block p-6 border-b border-gray-800 hover:bg-gray-900 transition-colors">
-        <h1 className="font-display text-2xl text-military-gold tracking-wider stencil-text">
-          WW2 ARSENAL
-        </h1>
-        <p className="text-xs text-gray-500 font-mono mt-1">
-          WEAPONS REPOSITORY
-        </p>
-      </Link>
+    <aside
+      className={`
+        fixed top-0 left-0 z-50 w-64 bg-military-black border-r border-gray-800
+        h-screen overflow-y-auto flex flex-col
+        transition-transform duration-300 ease-in-out
+        lg:sticky lg:translate-x-0
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}
+    >
+      {/* Logo + Close button */}
+      <div className="flex items-center justify-between border-b border-gray-800">
+        <Link
+          href="/"
+          className="block flex-1 p-6 hover:bg-gray-900 transition-colors"
+          onClick={onClose}
+        >
+          <h1 className="font-display text-2xl text-military-gold tracking-wider stencil-text">
+            WW2 ARSENAL
+          </h1>
+          <p className="text-xs text-gray-500 font-mono mt-1">
+            WEAPONS REPOSITORY
+          </p>
+        </Link>
+        {/* Close button - mobile only */}
+        <button
+          onClick={onClose}
+          className="lg:hidden p-4 text-gray-400 hover:text-white"
+          aria-label="Close menu"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M4 4l12 12M16 4L4 16" />
+          </svg>
+        </button>
+      </div>
 
       {/* Categories */}
       <nav className="p-4 flex-1">
@@ -39,6 +68,7 @@ export function Sidebar() {
               {/* Category Header */}
               <Link
                 href={`/${categoryKey}`}
+                onClick={onClose}
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-md
                   transition-all duration-200 group
@@ -63,6 +93,7 @@ export function Sidebar() {
                 <div className="ml-9 mt-2 space-y-0.5 border-l border-gray-700/50 pl-4">
                   <Link
                     href={`/${categoryKey}`}
+                    onClick={onClose}
                     className={`
                       block px-3 py-1.5 text-sm rounded transition-colors
                       ${
@@ -80,6 +111,7 @@ export function Sidebar() {
                       <Link
                         key={sub.slug}
                         href={`/${categoryKey}?sub=${sub.slug}`}
+                        onClick={onClose}
                         className={`
                           block px-3 py-1.5 text-sm rounded transition-colors
                           ${
