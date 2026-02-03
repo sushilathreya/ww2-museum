@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --military-green: #4a5d23;
+  --military-gold: #c9a227;
+  --military-black: #1a1a1a;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: #e5e5e5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c9a227;
+}
+
+/* Military card glow on hover */
+.weapon-card-glow:hover {
+  box-shadow:
+    0 0 30px rgba(201, 162, 39, 0.15),
+    0 0 60px rgba(201, 162, 39, 0.05);
+}
+
+/* Stencil text style */
+.stencil-text {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
