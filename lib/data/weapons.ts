@@ -167,7 +167,7 @@ export const weapons: Weapon[] = [
     manufacturer: 'Colt\'s Manufacturing',
     yearIntroduced: 1924,
     yearRetired: 1986,
-    imageUrl: '/weapons/m1911.jpg',
+    imageUrl: '/weapons/m1911.png',
     specs: {
       caliber: '.45 ACP (11.43×23mm)',
       action: 'Short recoil operation',

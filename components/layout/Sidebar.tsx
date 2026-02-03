@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { CATEGORY_CONFIG, WeaponCategory } from '@/lib/types/weapon';
 
 const categoryIcons: Record<WeaponCategory, string> = {
@@ -13,6 +13,8 @@ const categoryIcons: Record<WeaponCategory, string> = {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeSub = searchParams.get('sub');
 
   return (
     <aside className="w-64 bg-military-black border-r border-gray-800 h-screen sticky top-0 overflow-y-auto flex flex-col">
@@ -64,7 +66,7 @@ export function Sidebar() {
                     className={`
                       block px-3 py-1.5 text-sm rounded transition-colors
                       ${
-                        pathname === `/${categoryKey}`
+                        pathname === `/${categoryKey}` && !activeSub
                           ? 'text-military-gold bg-military-gold/10'
                           : 'text-gray-500 hover:text-gray-300'
                       }
@@ -73,7 +75,7 @@ export function Sidebar() {
                     All {category.label.toLowerCase()}
                   </Link>
                   {category.subcategories.map((sub) => {
-                    const isSubActive = pathname === `/${categoryKey}/${sub.slug}`;
+                    const isSubActive = pathname === `/${categoryKey}` && activeSub === sub.slug;
                     return (
                       <Link
                         key={sub.slug}

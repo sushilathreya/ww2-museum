@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Weapon, WeaponSubcategory, CountryCode, COUNTRIES, CATEGORY_CONFIG, WeaponCategory } from '@/lib/types/weapon';
 import { WeaponCard } from './WeaponCard';
 import { cn } from '@/lib/utils';
@@ -13,8 +14,22 @@ interface WeaponGridProps {
 }
 
 export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridProps) {
-  const [selectedCountry, setSelectedCountry] = useState<CountryCode | null>(null);
-  const [selectedSub, setSelectedSub] = useState<WeaponSubcategory | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const selectedSub = (searchParams.get('sub') as WeaponSubcategory) || null;
+  const selectedCountry = (searchParams.get('country') as CountryCode) || null;
+
+  function updateFilter(key: string, value: string | null) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  }
 
   // Get unique countries from weapons
   const availableCountries = useMemo(() => {
@@ -55,7 +70,7 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
             </p>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => setSelectedSub(null)}
+                onClick={() => updateFilter('sub', null)}
                 className={cn(
                   'px-3 py-1.5 text-xs font-mono rounded border transition-colors',
                   !selectedSub
@@ -68,7 +83,7 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
               {subcategories.map((sub) => (
                 <button
                   key={sub.slug}
-                  onClick={() => setSelectedSub(selectedSub === sub.slug ? null : sub.slug)}
+                  onClick={() => updateFilter('sub', selectedSub === sub.slug ? null : sub.slug)}
                   className={cn(
                     'px-3 py-1.5 text-xs font-mono rounded border transition-colors uppercase',
                     selectedSub === sub.slug
@@ -90,7 +105,7 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
           </p>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setSelectedCountry(null)}
+              onClick={() => updateFilter('country', null)}
               className={cn(
                 'px-3 py-1.5 text-xs font-mono rounded border transition-colors',
                 !selectedCountry
@@ -104,7 +119,7 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
               <button
                 key={code}
                 onClick={() =>
-                  setSelectedCountry(selectedCountry === code ? null : code)
+                  updateFilter('country', selectedCountry === code ? null : code)
                 }
                 className={cn(
                   'px-3 py-1.5 text-xs rounded border transition-colors',
