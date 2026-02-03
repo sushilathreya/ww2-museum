@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Weapon, COUNTRIES } from '@/lib/types/weapon';
-import { cn } from '@/lib/utils';
+import { cn, assetPath } from '@/lib/utils';
 
 interface WeaponCardProps {
   weapon: Weapon;
@@ -29,7 +29,7 @@ export function WeaponCard({ weapon }: WeaponCardProps) {
         <div className="aspect-[4/3] relative bg-gradient-to-b from-gray-800/50 to-gray-900 overflow-hidden">
           {/* Weapon Image */}
           <Image
-            src={weapon.imageUrl}
+            src={assetPath(weapon.imageUrl)}
             alt={weapon.name}
             fill
             className={cn(

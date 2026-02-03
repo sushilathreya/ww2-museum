@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Weapon, COUNTRIES, GunSpecs, TankSpecs, PlaneSpecs, NavalSpecs } from '@/lib/types/weapon';
+import { assetPath } from '@/lib/utils';
 
 const WeaponViewerPlaceholder = dynamic(
   () => import('@/components/3d/WeaponViewer').then((m) => m.WeaponViewerPlaceholder),
@@ -60,7 +61,7 @@ export function WeaponDetail({ weapon }: WeaponDetailProps) {
       {/* Weapon Image */}
       <div className="mb-6 relative h-[350px] rounded-lg overflow-hidden">
         <Image
-          src={weapon.imageUrl}
+          src={assetPath(weapon.imageUrl)}
           alt={weapon.name}
           fill
           className="object-cover"

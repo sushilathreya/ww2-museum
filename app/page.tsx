@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getFeaturedWeapons, weapons } from '@/lib/data/weapons';
 import { CATEGORY_CONFIG, WeaponCategory, COUNTRIES } from '@/lib/types/weapon';
+import { assetPath } from '@/lib/utils';
 
 const categoryIcons: Record<WeaponCategory, string> = {
   guns: '🔫',
@@ -137,7 +138,7 @@ export default function HomePage() {
               >
                 <div className="relative h-48 overflow-hidden">
                   <Image
-                    src={weapon.imageUrl}
+                    src={assetPath(weapon.imageUrl)}
                     alt={weapon.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
