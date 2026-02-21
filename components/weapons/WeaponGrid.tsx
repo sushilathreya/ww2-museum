@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Weapon, WeaponSubcategory, CountryCode, COUNTRIES, CATEGORY_CONFIG, WeaponCategory } from '@/lib/types/weapon';
 import { WeaponCard } from './WeaponCard';
@@ -28,7 +28,8 @@ export function WeaponGrid({ weapons, category, title, subtitle }: WeaponGridPro
     } else {
       params.delete(key);
     }
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    const nextQuery = params.toString();
+    router.push(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
   }
 
   // Get unique countries from weapons

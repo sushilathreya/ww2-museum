@@ -196,7 +196,7 @@ export function WeaponDetail({ weapon }: WeaponDetailProps) {
           <button
             type="button"
             onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-4 right-4 px-3 py-1.5 text-xs font-mono uppercase border border-gray-600 text-gray-300 rounded hover:border-military-gold hover:text-military-gold transition-colors"
+            className="absolute top-3 right-3 sm:top-4 sm:right-4 inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-gray-500 bg-black/70 px-4 py-2 text-sm sm:text-xs font-mono uppercase text-gray-200 shadow-md transition-colors hover:border-military-gold hover:text-military-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-military-gold/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             aria-label="Close full image"
           >
             Close

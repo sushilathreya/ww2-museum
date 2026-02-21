@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getWeaponBySlug, getWeaponsByCategory } from '@/lib/data/weapons';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { WeaponDetail } from '@/components/weapons/WeaponDetail';
 import type { Metadata } from 'next';
+import { buildWeaponBreadcrumbJsonLd, buildWeaponMetadata } from '@/lib/seo';
 
 interface PageProps {
   params: { slug: string };
@@ -17,10 +19,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
   const weapon = getWeaponBySlug(params.slug);
   if (!weapon) return { title: 'Not Found' };
 
-  return {
-    title: `${weapon.name} - Weapons of World War 2`,
-    description: weapon.history.overview,
-  };
+  return buildWeaponMetadata(weapon);
 }
 
 export default function PlaneDetailPage({ params }: PageProps) {
@@ -30,5 +29,12 @@ export default function PlaneDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  return <WeaponDetail weapon={weapon} />;
+  const breadcrumbJsonLd = buildWeaponBreadcrumbJsonLd(weapon);
+
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd} />
+      <WeaponDetail weapon={weapon} />
+    </>
+  );
 }
