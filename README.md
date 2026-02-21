@@ -36,17 +36,17 @@ NEXT_PUBLIC_BASE_PATH=/ww2-museum npm run build
 
 Google Analytics (GA4) is enabled site-wide via `gtag.js`.
 
-- Default Measurement ID: `G-BVPDE9HBJ6`
+- Default Measurement ID: `G-V9Z4JXBKTX`
 - Override with env var if you want a different property:
 
 ```bash
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-V9Z4JXBKTX
 ```
 
 In local development:
 
 ```bash
-echo \"NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX\" >> .env.local
+echo \"NEXT_PUBLIC_GA_MEASUREMENT_ID=G-V9Z4JXBKTX\" >> .env.local
 ```
 
 ## Project Structure
