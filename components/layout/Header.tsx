@@ -61,6 +61,34 @@ export function Header({ onMenuToggle }: HeaderProps) {
               {CATEGORY_CONFIG[key].label}
             </Link>
           ))}
+          <Link
+            href="/timeline"
+            className={`
+                text-xs font-mono uppercase tracking-wider px-3 py-1.5 rounded
+                transition-colors
+                ${
+                  pathname.startsWith('/timeline')
+                    ? 'text-military-gold bg-military-gold/10'
+                    : 'text-gray-500 hover:text-white'
+                }
+              `}
+          >
+            TIMELINE
+          </Link>
+          <Link
+            href="/top-weapons"
+            className={`
+                text-xs font-mono uppercase tracking-wider px-3 py-1.5 rounded
+                transition-colors
+                ${
+                  pathname.startsWith('/top-weapons')
+                    ? 'text-military-gold bg-military-gold/10'
+                    : 'text-gray-500 hover:text-white'
+                }
+              `}
+          >
+            TOP 8
+          </Link>
         </nav>
       </div>
     </header>

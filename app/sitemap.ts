@@ -32,6 +32,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     })),
     {
+      url: absoluteUrl('/timeline'),
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.88,
+    },
+    {
+      url: absoluteUrl('/top-weapons'),
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.87,
+    },
+    {
       url: absoluteUrl('/compare'),
       lastModified,
       changeFrequency: 'weekly',

@@ -29,6 +29,7 @@ interface BuildPageMetadataOptions {
   path: string;
   image?: string;
   type?: 'website' | 'article';
+  keywords?: string[];
 }
 
 export function buildPageMetadata({
@@ -37,12 +38,14 @@ export function buildPageMetadata({
   path,
   image = DEFAULT_SEO_IMAGE,
   type = 'website',
+  keywords,
 }: BuildPageMetadataOptions): Metadata {
   const normalizedPath = normalizePath(path);
 
   return {
     title,
     description,
+    keywords,
     alternates: {
       canonical: normalizedPath,
     },

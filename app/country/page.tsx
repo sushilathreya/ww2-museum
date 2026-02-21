@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { ResearchHomeLogo } from '@/components/layout/ResearchHomeLogo';
 import { countryCodeToSlug, getCountryCategoryClusters } from '@/lib/data/phase2';
 import { CATEGORY_CONFIG, COUNTRIES } from '@/lib/types/weapon';
 import { absoluteUrl, buildPageMetadata } from '@/lib/seo';
@@ -38,6 +39,7 @@ export default function CountryIndexPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <JsonLd data={schema} />
+      <ResearchHomeLogo className="mb-5" />
 
       <header className="mb-8 rounded-xl border border-gray-800 bg-gradient-to-br from-gray-950 via-gray-900 to-black p-6 sm:p-8">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold">Phase 2 Cluster</p>

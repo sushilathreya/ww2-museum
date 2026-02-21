@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { ResearchHomeLogo } from '@/components/layout/ResearchHomeLogo';
 import {
   countryCodeToSlug,
   countrySlugToCode,
@@ -68,6 +69,7 @@ export default function CountryCategoryPage({ params }: PageProps) {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <JsonLd data={schema} />
+      <ResearchHomeLogo className="mb-4" />
 
       <Link href="/country" className="inline-flex items-center gap-2 text-sm font-mono text-gray-500 hover:text-military-gold">
         <span>&larr;</span>
