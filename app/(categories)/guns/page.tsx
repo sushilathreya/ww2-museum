@@ -2,7 +2,7 @@ import { getWeaponsByCategory } from '@/lib/data/weapons';
 import { WeaponGrid } from '@/components/weapons/WeaponGrid';
 
 export const metadata = {
-  title: 'Guns - WW2 Arsenal',
+  title: 'Guns - Weapons of World War 2',
   description: 'Explore World War II firearms including handguns, submachine guns, rifles, sniper rifles, and machine guns.',
 };
 

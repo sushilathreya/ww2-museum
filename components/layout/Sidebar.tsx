@@ -14,7 +14,7 @@ const categoryIcons: Record<WeaponCategory, ElementType> = {
   explosives: Bomb,
 };
 
-const TOTAL_RECORDS = 79;
+const TOTAL_RECORDS = 83;
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -44,7 +44,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           onClick={onClose}
         >
           <h1 className="font-display text-2xl text-military-gold tracking-wider stencil-text">
-            WW2 ARSENAL
+            WEAPONS OF WORLD WAR 2
           </h1>
           <p className="text-xs text-gray-500 font-mono mt-1">
             WEAPONS REPOSITORY

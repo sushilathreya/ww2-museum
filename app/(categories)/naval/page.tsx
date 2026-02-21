@@ -2,7 +2,7 @@ import { getWeaponsByCategory } from '@/lib/data/weapons';
 import { WeaponGrid } from '@/components/weapons/WeaponGrid';
 
 export const metadata = {
-  title: 'Naval - WW2 Arsenal',
+  title: 'Naval - Weapons of World War 2',
   description: 'Explore World War II naval vessels including battleships, carriers, submarines, and destroyers.',
 };
 

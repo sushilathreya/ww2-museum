@@ -2,7 +2,7 @@ import { getWeaponsByCategory } from '@/lib/data/weapons';
 import { WeaponGrid } from '@/components/weapons/WeaponGrid';
 
 export const metadata = {
-  title: 'Planes - WW2 Arsenal',
+  title: 'Planes - Weapons of World War 2',
   description: 'Explore World War II aircraft including fighters, bombers, and transport planes.',
 };
 

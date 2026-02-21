@@ -18,7 +18,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
   if (!weapon) return { title: 'Not Found' };
 
   return {
-    title: `${weapon.name} - WW2 Arsenal`,
+    title: `${weapon.name} - Weapons of World War 2`,
     description: weapon.history.overview,
   };
 }

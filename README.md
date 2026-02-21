@@ -1,4 +1,4 @@
-# WW2 Arsenal Museum
+# Weapons of World War 2 Museum
 
 Interactive World War II weapons repository built with Next.js (App Router), TypeScript, and Tailwind.
 
@@ -9,7 +9,7 @@ The app now lands directly on the `Guns` catalog and includes a much broader cro
 - naval vessels
 - explosives (grenades, mines, demolition charges, incendiaries)
 
-Current repository size: **79 records**.
+Current repository size: **83 records**.
 
 ## Run Locally
 
@@ -32,12 +32,29 @@ For GitHub Pages builds:
 NEXT_PUBLIC_BASE_PATH=/ww2-museum npm run build
 ```
 
+## Analytics
+
+Google Analytics (GA4) is enabled site-wide via `gtag.js`.
+
+- Default Measurement ID: `G-BVPDE9HBJ6`
+- Override with env var if you want a different property:
+
+```bash
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+In local development:
+
+```bash
+echo \"NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX\" >> .env.local
+```
+
 ## Project Structure
 
 - `app/(categories)/*`: category index pages and `[slug]` detail pages
 - `app/page.tsx`: root route redirect to `/guns`
 - `components/weapons/*`: reusable card/grid/detail UI
-- `components/3d/WeaponViewer.tsx`: optional 3D model viewer/placeholder
+- `components/3d/WeaponViewer.tsx`: optional 3D model viewer
 - `lib/data/weapons.ts`: original core dataset + merged export
 - `lib/data/expandedWeapons.ts`: expanded WW2 catalog entries
 - `lib/types/weapon.ts`: category, subtype, and spec type definitions
@@ -69,3 +86,4 @@ WW2-era catalogs include fragmentation/smoke/anti-tank grenades and demolition c
 
 - This is an educational archive, not an operational or procurement dataset.
 - Some entries are concise by design to cover broad WW2 weapon classes in one repository.
+- 3D placeholder components were intentionally removed on February 21, 2026. If you want them back, restore `WeaponViewerPlaceholder` from Git history in `components/3d/WeaponViewer.tsx` and wire it again in `components/weapons/WeaponDetail.tsx`.

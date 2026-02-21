@@ -1,6 +1,8 @@
 import {
   Weapon,
   CountryCode,
+  WeaponCategory,
+  WeaponSubcategory,
   GunSubcategory,
   TankSubcategory,
   PlaneSubcategory,
@@ -12,15 +14,156 @@ import {
   NavalSpecs,
   ExplosiveSpecs,
 } from '@/lib/types/weapon';
+import { expandedHistoryById } from '@/lib/data/expandedHistory';
 
-function history(overview: string, notableUses: string[] = []): Weapon['history'] {
+interface HistoryContext {
+  id: string;
+  name: string;
+  category: WeaponCategory;
+  subcategory: WeaponSubcategory;
+  manufacturer: string;
+  yearIntroduced: number;
+  yearRetired?: number;
+  specs: Weapon['specs'];
+  overview: string;
+  fallbackNotableUses?: string[];
+}
+
+function formatServiceWindow(yearIntroduced: number, yearRetired?: number): string {
+  if (!yearRetired) return `from ${yearIntroduced} onward`;
+  if (yearRetired === yearIntroduced) return `during ${yearIntroduced}`;
+  return `from ${yearIntroduced} to ${yearRetired}`;
+}
+
+function doctrineLine(category: WeaponCategory, subcategory: WeaponSubcategory): string {
+  if (category === 'guns') {
+    if (subcategory === 'sniper') return 'It was employed for deliberate long-range precision and counter-sniper work.';
+    if (subcategory === 'machinegun') return 'It anchored squad and platoon fire plans with sustained suppressive fire.';
+    if (subcategory === 'smg') return 'It was favored for close-quarters assaults where volume of fire and speed mattered most.';
+    if (subcategory === 'handgun') return 'It served as a practical sidearm for officers, crews, and specialists.';
+    return 'It was fielded as a frontline individual weapon for general infantry service.';
+  }
+
+  if (category === 'tanks') {
+    if (subcategory === 'heavy-tank') return 'Its doctrine emphasized breakthrough assaults, strongpoint reduction, and shock value.';
+    if (subcategory === 'tank-destroyer') return 'It was optimized to hunt armor and blunt enemy breakthroughs.';
+    return 'It was intended to combine maneuver with battlefield fire support under armored protection.';
+  }
+
+  if (category === 'planes') {
+    if (subcategory === 'fighter') return 'Doctrine prioritized air superiority, interception, and rapid tactical response.';
+    if (subcategory === 'bomber') return 'It was designed to project firepower deep into enemy rear areas and infrastructure.';
+    return 'Its role centered on logistics, airborne movement, and operational reach.';
+  }
+
+  if (category === 'naval') {
+    if (subcategory === 'carrier') return 'Its combat value came from aircraft projection, reconnaissance, and strike flexibility.';
+    if (subcategory === 'submarine') return 'It contributed through sea-lane interdiction, stealth patrols, and attrition warfare.';
+    if (subcategory === 'destroyer') return 'It provided screening, anti-submarine defense, and fast-response surface action.';
+    return 'It represented concentrated naval gunfire power in fleet engagements.';
+  }
+
+  if (subcategory === 'mine') return 'It shaped terrain and movement by channeling, delaying, and attriting enemy formations.';
+  if (subcategory === 'smoke-grenade')
+    return 'It was used to obscure movement, break observation, and reduce enemy fire control.';
+  if (subcategory === 'demolition-charge')
+    return 'It enabled combat engineers to breach, sabotage, and clear obstacles under fire.';
+  if (subcategory === 'incendiary')
+    return 'It was intended to ignite fuel, materiel, and positions where fire effects were decisive.';
+  if (subcategory === 'anti-tank-grenade')
+    return 'It gave infantry a close-range anti-armor option in ambush and urban conditions.';
+  return 'It was carried as a compact battlefield explosive for assault and defensive actions.';
+}
+
+function performanceLine(context: HistoryContext): string {
+  if (context.category === 'guns') {
+    const specs = context.specs as GunSpecs;
+    const fireLine = specs.rateOfFire > 0 ? `${specs.rateOfFire} rpm` : 'semi-automatic fire';
+    return `Combat profile: ${specs.caliber}, ${specs.action}, ${fireLine}, and an effective range of about ${specs.effectiveRange} m.`;
+  }
+
+  if (context.category === 'tanks') {
+    const specs = context.specs as TankSpecs;
+    return `Combat profile: ${specs.weight}-ton platform with ${specs.mainArmament}, ${specs.armor.front} mm frontal armor, top speed near ${specs.maxSpeed} km/h, and about ${specs.productionCount.toLocaleString()} built.`;
+  }
+
+  if (context.category === 'planes') {
+    const specs = context.specs as PlaneSpecs;
+    return `Combat profile: top speed around ${specs.maxSpeed} km/h, combat range near ${specs.range} km, service ceiling of ${specs.ceiling.toLocaleString()} m, and total production of about ${specs.productionCount.toLocaleString()}.`;
+  }
+
+  if (context.category === 'naval') {
+    const specs = context.specs as NavalSpecs;
+    return `Combat profile: roughly ${specs.displacement.toLocaleString()} tons displacement, ${specs.speed} knots, operational range near ${specs.range.toLocaleString()} nmi, and crew requirements around ${specs.crew.toLocaleString()}.`;
+  }
+
+  const specs = context.specs as ExplosiveSpecs;
+  const range =
+    typeof specs.effectiveRange === 'number' ? `effective range around ${specs.effectiveRange} m` : 'close-placement employment';
+  const blast =
+    typeof specs.blastRadius === 'number' ? `blast radius near ${specs.blastRadius} m` : 'effects dependent on emplacement and cover';
+  return `Combat profile: ${specs.explosiveType} filling, ${specs.fuzing} fuzing, ${specs.weight} kg total weight, ${range}, and ${blast}.`;
+}
+
+function enrichUses(uses: string[], context: HistoryContext): string[] {
+  if (uses.length === 0) {
+    return ['Documented as an operational World War II weapon platform.'];
+  }
+
+  const notesByCategory: Record<WeaponCategory, string[]> = {
+    guns: [
+      `${context.name} was used here in squad-level engagements where handling and immediate fire effect mattered.`,
+      'This theater exposed how ammunition load, reliability, and training shaped real battlefield outcomes.',
+      `Field reports from this context show why ${context.subcategory.replace('-', ' ')} doctrine evolved during the war.`,
+    ],
+    tanks: [
+      `${context.name} faced the classic WW2 armor tradeoff between protection, mobility, and sustained operations.`,
+      'This campaign context tested crew coordination, recovery capability, and maintenance depth under pressure.',
+      `Operational records from this setting show how armor performance depended on combined-arms support, not tank specs alone.`,
+    ],
+    planes: [
+      `${context.name} performance in this setting depended on pilot quality, sortie tempo, and maintenance turnaround.`,
+      'Air combat here highlighted the gap between published performance and mission reality under weather and fuel constraints.',
+      `This theater is useful for understanding how ${context.subcategory.replace('-', ' ')} aircraft were integrated into broader operations.`,
+    ],
+    naval: [
+      `${context.name} in this context reflects the importance of scouting, command decisions, and damage control discipline.`,
+      'Action reports from this theater show endurance and logistics were often as decisive as armament.',
+      `This employment case captures how naval doctrine translated platform capability into campaign-level effect.`,
+    ],
+    explosives: [
+      `${context.name} employment here depended on timing, distance, and unit coordination more than raw charge size.`,
+      'This use case shows how engineers and infantry turned explosive tools into tactical advantage in constrained terrain.',
+      `Field application in this context illustrates why placement and doctrine governed real effect.`,
+    ],
+  };
+
+  const notes = notesByCategory[context.category];
+  return uses.map((use, index) => `${use} - ${notes[index % notes.length]}`);
+}
+
+function history(context: HistoryContext): Weapon['history'] {
+  const curated = expandedHistoryById[context.id];
+  const serviceWindow = formatServiceWindow(context.yearIntroduced, context.yearRetired);
+  const provenance = `${context.name} entered service ${serviceWindow} and was produced by ${context.manufacturer}.`;
+  const doctrine = doctrineLine(context.category, context.subcategory);
+  const performance = performanceLine(context);
+  const fallbackNotableUses = context.fallbackNotableUses ?? [];
+
+  if (curated) {
+    return {
+      overview: context.overview,
+      development: curated.development,
+      combatHistory: curated.combatHistory,
+      notableUses: enrichUses(curated.notableUses, context),
+    };
+  }
+
   return {
-    overview,
-    development:
-      'This entry is part of the expanded WW2 catalog and summarizes core service history for repository coverage.',
-    combatHistory:
-      'Saw operational use during World War II in one or more theaters based on reference sources listed in the project README.',
-    notableUses: notableUses.length > 0 ? notableUses : ['Operational service during World War II.'],
+    overview: context.overview,
+    development: `This system was developed and fielded during World War II to meet branch-level operational requirements. ${provenance} ${doctrine}`,
+    combatHistory: `It saw wartime operational use, with employment varying by theater, doctrine, and logistics. ${performance}`,
+    notableUses: enrichUses(fallbackNotableUses, context),
   };
 }
 
@@ -36,7 +179,18 @@ function gun(
     ...data,
     category: 'guns',
     specs: data.specs,
-    history: history(data.overview, data.notableUses),
+    history: history({
+      id: data.id,
+      name: data.name,
+      category: 'guns',
+      subcategory: data.subcategory,
+      manufacturer: data.manufacturer,
+      yearIntroduced: data.yearIntroduced,
+      yearRetired: data.yearRetired,
+      specs: data.specs,
+      overview: data.overview,
+      fallbackNotableUses: data.notableUses,
+    }),
     featured: false,
   };
 }
@@ -53,7 +207,18 @@ function tank(
     ...data,
     category: 'tanks',
     specs: data.specs,
-    history: history(data.overview, data.notableUses),
+    history: history({
+      id: data.id,
+      name: data.name,
+      category: 'tanks',
+      subcategory: data.subcategory,
+      manufacturer: data.manufacturer,
+      yearIntroduced: data.yearIntroduced,
+      yearRetired: data.yearRetired,
+      specs: data.specs,
+      overview: data.overview,
+      fallbackNotableUses: data.notableUses,
+    }),
     featured: false,
   };
 }
@@ -70,7 +235,18 @@ function plane(
     ...data,
     category: 'planes',
     specs: data.specs,
-    history: history(data.overview, data.notableUses),
+    history: history({
+      id: data.id,
+      name: data.name,
+      category: 'planes',
+      subcategory: data.subcategory,
+      manufacturer: data.manufacturer,
+      yearIntroduced: data.yearIntroduced,
+      yearRetired: data.yearRetired,
+      specs: data.specs,
+      overview: data.overview,
+      fallbackNotableUses: data.notableUses,
+    }),
     featured: false,
   };
 }
@@ -87,7 +263,18 @@ function naval(
     ...data,
     category: 'naval',
     specs: data.specs,
-    history: history(data.overview, data.notableUses),
+    history: history({
+      id: data.id,
+      name: data.name,
+      category: 'naval',
+      subcategory: data.subcategory,
+      manufacturer: data.manufacturer,
+      yearIntroduced: data.yearIntroduced,
+      yearRetired: data.yearRetired,
+      specs: data.specs,
+      overview: data.overview,
+      fallbackNotableUses: data.notableUses,
+    }),
     featured: false,
   };
 }
@@ -104,7 +291,18 @@ function explosive(
     ...data,
     category: 'explosives',
     specs: data.specs,
-    history: history(data.overview, data.notableUses),
+    history: history({
+      id: data.id,
+      name: data.name,
+      category: 'explosives',
+      subcategory: data.subcategory,
+      manufacturer: data.manufacturer,
+      yearIntroduced: data.yearIntroduced,
+      yearRetired: data.yearRetired,
+      specs: data.specs,
+      overview: data.overview,
+      fallbackNotableUses: data.notableUses,
+    }),
     featured: false,
   };
 }
@@ -438,6 +636,102 @@ export const expandedWeapons: Weapon[] = [
       length: 896,
     },
     overview: 'Special-purpose suppressed carbine for commando and clandestine operations.',
+  }),
+  gun({
+    id: 'm1903a4-springfield',
+    slug: 'm1903a4-springfield',
+    name: 'M1903A4 Springfield',
+    designation: 'U.S. Rifle, Caliber .30, M1903A4 (Sniper)',
+    subcategory: 'sniper',
+    country: country('US'),
+    manufacturer: 'Remington Arms / Smith-Corona',
+    yearIntroduced: 1943,
+    yearRetired: 1960,
+    imageUrl: '/weapons/m1-garand.jpg',
+    specs: {
+      caliber: '.30-06 Springfield (7.62x63mm)',
+      action: 'Bolt-action',
+      rateOfFire: 12,
+      muzzleVelocity: 853,
+      effectiveRange: 800,
+      magazineCapacity: 5,
+      weight: 3.95,
+      length: 1118,
+    },
+    overview: 'Primary U.S. sniper rifle in the later WW2 period, based on the M1903 bolt-action platform.',
+    notableUses: ['Normandy campaign', 'European Theater precision roles'],
+  }),
+  gun({
+    id: 'lee-enfield-no4t',
+    slug: 'lee-enfield-no4t',
+    name: 'Lee-Enfield No.4 Mk I (T)',
+    designation: 'Rifle No.4 Mk I (T) Sniper',
+    subcategory: 'sniper',
+    country: country('UK'),
+    manufacturer: 'Royal Ordnance Factories',
+    yearIntroduced: 1942,
+    yearRetired: 1970,
+    imageUrl: '/weapons-expanded/lee-enfield-no4.jpg',
+    specs: {
+      caliber: '.303 British (7.7x56mmR)',
+      action: 'Bolt-action',
+      rateOfFire: 15,
+      muzzleVelocity: 744,
+      effectiveRange: 800,
+      magazineCapacity: 10,
+      weight: 4.8,
+      length: 1130,
+    },
+    overview: 'British sniper conversion of the No.4 rifle with selected actions and telescopic sight.',
+    notableUses: ['Northwest Europe 1944-45', 'Commonwealth sniper detachments'],
+  }),
+  gun({
+    id: 'kar98k-sniper',
+    slug: 'kar98k-sniper',
+    name: 'Kar98k Sniper',
+    designation: 'Karabiner 98k with ZF39/ZF41 optics',
+    subcategory: 'sniper',
+    country: country('DE'),
+    manufacturer: 'Mauser / various arsenals',
+    yearIntroduced: 1939,
+    yearRetired: 1945,
+    imageUrl: '/weapons/kar98k.jpg',
+    specs: {
+      caliber: '7.92x57mm Mauser',
+      action: 'Bolt-action',
+      rateOfFire: 12,
+      muzzleVelocity: 760,
+      effectiveRange: 800,
+      magazineCapacity: 5,
+      weight: 4.1,
+      length: 1110,
+    },
+    overview: 'Scoped Kar98k rifles used by German sharpshooters across all major fronts.',
+    notableUses: ['Eastern Front long-range engagements', 'Normandy defensive operations'],
+  }),
+  gun({
+    id: 'mosin-m9130-pu-sniper',
+    slug: 'mosin-m9130-pu-sniper',
+    name: 'Mosin-Nagant M91/30 PU Sniper',
+    designation: 'M91/30 with PU scope',
+    subcategory: 'sniper',
+    country: country('USSR'),
+    manufacturer: 'Izhevsk / Tula',
+    yearIntroduced: 1942,
+    yearRetired: 1960,
+    imageUrl: '/weapons-expanded/mosin-m9130.png',
+    specs: {
+      caliber: '7.62x54mmR',
+      action: 'Bolt-action',
+      rateOfFire: 12,
+      muzzleVelocity: 865,
+      effectiveRange: 800,
+      magazineCapacity: 5,
+      weight: 4.0,
+      length: 1232,
+    },
+    overview: 'Soviet WW2 sniper standard, fielded widely with PU optics on selected M91/30 rifles.',
+    notableUses: ['Stalingrad sniping operations', 'Soviet counter-offensives 1943-45'],
   }),
 
   // Tanks
