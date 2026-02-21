@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Bebas_Neue, JetBrains_Mono, Inter } from 'next/font/google';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import './globals.css';
@@ -36,7 +37,9 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${jetbrainsMono.variable} ${inter.variable}`}
     >
       <body className="font-[var(--font-inter)] antialiased">
-        <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
         {children}
       </body>
     </html>
