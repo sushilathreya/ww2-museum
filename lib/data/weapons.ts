@@ -1,6 +1,7 @@
 import { Weapon, WeaponCategory, WeaponSubcategory } from '@/lib/types/weapon';
+import { expandedWeapons } from '@/lib/data/expandedWeapons';
 
-export const weapons: Weapon[] = [
+const coreWeapons: Weapon[] = [
   // ═══════════════════════════════════════
   // GUNS
   // ═══════════════════════════════════════
@@ -595,6 +596,8 @@ export const weapons: Weapon[] = [
     featured: true,
   },
 ];
+
+export const weapons: Weapon[] = [...coreWeapons, ...expandedWeapons];
 
 export function getWeaponBySlug(slug: string): Weapon | undefined {
   return weapons.find((w) => w.slug === slug);

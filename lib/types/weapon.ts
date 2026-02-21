@@ -1,15 +1,23 @@
-export type WeaponCategory = 'guns' | 'tanks' | 'planes' | 'naval';
+export type WeaponCategory = 'guns' | 'tanks' | 'planes' | 'naval' | 'explosives';
 
 export type GunSubcategory = 'handgun' | 'smg' | 'rifle' | 'sniper' | 'machinegun';
 export type TankSubcategory = 'light-tank' | 'medium-tank' | 'heavy-tank' | 'tank-destroyer';
 export type PlaneSubcategory = 'fighter' | 'bomber' | 'transport';
 export type NavalSubcategory = 'battleship' | 'carrier' | 'submarine' | 'destroyer';
+export type ExplosiveSubcategory =
+  | 'fragmentation-grenade'
+  | 'anti-tank-grenade'
+  | 'smoke-grenade'
+  | 'mine'
+  | 'demolition-charge'
+  | 'incendiary';
 
 export type WeaponSubcategory =
   | GunSubcategory
   | TankSubcategory
   | PlaneSubcategory
-  | NavalSubcategory;
+  | NavalSubcategory
+  | ExplosiveSubcategory;
 
 export type CountryCode = 'US' | 'DE' | 'UK' | 'JP' | 'USSR' | 'IT' | 'FR';
 
@@ -56,6 +64,15 @@ export interface NavalSpecs {
   armor: { belt: number; deck: number };
 }
 
+export interface ExplosiveSpecs {
+  explosiveType: string;
+  fuzing: string;
+  filling: string;
+  weight: number;
+  effectiveRange?: number;
+  blastRadius?: number;
+}
+
 export interface Weapon {
   id: string;
   slug: string;
@@ -71,7 +88,7 @@ export interface Weapon {
   model3dUrl?: string;
   imageUrl: string;
 
-  specs: GunSpecs | TankSpecs | PlaneSpecs | NavalSpecs;
+  specs: GunSpecs | TankSpecs | PlaneSpecs | NavalSpecs | ExplosiveSpecs;
 
   history: {
     overview: string;
@@ -131,6 +148,17 @@ export const CATEGORY_CONFIG: Record<
       { slug: 'carrier', label: 'Carriers' },
       { slug: 'submarine', label: 'Submarines' },
       { slug: 'destroyer', label: 'Destroyers' },
+    ],
+  },
+  explosives: {
+    label: 'EXPLOSIVES',
+    subcategories: [
+      { slug: 'fragmentation-grenade', label: 'Fragmentation Grenades' },
+      { slug: 'anti-tank-grenade', label: 'Anti-Tank Grenades' },
+      { slug: 'smoke-grenade', label: 'Smoke Grenades' },
+      { slug: 'mine', label: 'Mines' },
+      { slug: 'demolition-charge', label: 'Demolition Charges' },
+      { slug: 'incendiary', label: 'Incendiary' },
     ],
   },
 };

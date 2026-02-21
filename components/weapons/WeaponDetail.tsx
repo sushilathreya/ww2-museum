@@ -3,7 +3,15 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Weapon, COUNTRIES, GunSpecs, TankSpecs, PlaneSpecs, NavalSpecs } from '@/lib/types/weapon';
+import {
+  Weapon,
+  COUNTRIES,
+  GunSpecs,
+  TankSpecs,
+  PlaneSpecs,
+  NavalSpecs,
+  ExplosiveSpecs,
+} from '@/lib/types/weapon';
 import { assetPath } from '@/lib/utils';
 
 const WeaponViewerPlaceholder = dynamic(
@@ -211,6 +219,18 @@ function getSpecRows(weapon: Weapon): [string, string][] {
       ['Armament', s.armament.join(', ')],
       ['Belt Armor', `${s.armor.belt} mm`],
       ['Deck Armor', `${s.armor.deck} mm`],
+    ];
+  }
+
+  if (weapon.category === 'explosives') {
+    const s = specs as ExplosiveSpecs;
+    return [
+      ['Type', s.explosiveType],
+      ['Fuzing', s.fuzing],
+      ['Filling', s.filling],
+      ['Weight', `${s.weight} kg`],
+      ['Effective Range', s.effectiveRange ? `${s.effectiveRange} m` : 'Contact / Placement'],
+      ['Blast Radius', s.blastRadius ? `${s.blastRadius} m` : 'Varies by use'],
     ];
   }
 

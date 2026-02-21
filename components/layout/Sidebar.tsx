@@ -1,15 +1,20 @@
 'use client';
 
+import { type ElementType } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { Airplane, Anchor, Bomb, Crosshair, Shield } from '@phosphor-icons/react';
 import { CATEGORY_CONFIG, WeaponCategory } from '@/lib/types/weapon';
 
-const categoryIcons: Record<WeaponCategory, string> = {
-  guns: '🔫',
-  tanks: '🪖',
-  planes: '✈️',
-  naval: '⚓',
+const categoryIcons: Record<WeaponCategory, ElementType> = {
+  guns: Crosshair,
+  tanks: Shield,
+  planes: Airplane,
+  naval: Anchor,
+  explosives: Bomb,
 };
+
+const TOTAL_RECORDS = 79;
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -62,6 +67,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         {(Object.keys(CATEGORY_CONFIG) as WeaponCategory[]).map((categoryKey) => {
           const category = CATEGORY_CONFIG[categoryKey];
           const isActive = pathname.startsWith(`/${categoryKey}`);
+          const CategoryIcon = categoryIcons[categoryKey];
 
           return (
             <div key={categoryKey} className="mb-4">
@@ -79,7 +85,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
                   }
                 `}
               >
-                <span className="text-lg">{categoryIcons[categoryKey]}</span>
+                <CategoryIcon size={18} weight={isActive ? 'fill' : 'regular'} className="shrink-0" />
                 <span className="font-display text-lg tracking-wide">
                   {category.label}
                 </span>
@@ -135,7 +141,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       {/* Footer */}
       <div className="p-4 border-t border-gray-800">
         <div className="text-xs text-gray-600 font-mono">
-          <p>TOTAL RECORDS: 15</p>
+          <p>TOTAL RECORDS: {TOTAL_RECORDS}</p>
           <p>WWII: 1939-1945</p>
         </div>
       </div>
