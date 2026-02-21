@@ -20,8 +20,18 @@ const WeaponViewer = dynamic(
   { ssr: false, loading: () => <div className="w-full h-[300px] sm:h-[500px] bg-gray-900 rounded-lg animate-pulse" /> },
 );
 
+interface InternalLink {
+  href: string;
+  label: string;
+  note?: string;
+}
+
 interface WeaponDetailProps {
   weapon: Weapon;
+  relatedLinks?: InternalLink[];
+  comparisonLinks?: InternalLink[];
+  battleLinks?: InternalLink[];
+  countryCategoryLink?: InternalLink;
 }
 
 interface BriefingCard {
@@ -29,7 +39,13 @@ interface BriefingCard {
   body: string;
 }
 
-export function WeaponDetail({ weapon }: WeaponDetailProps) {
+export function WeaponDetail({
+  weapon,
+  relatedLinks = [],
+  comparisonLinks = [],
+  battleLinks = [],
+  countryCategoryLink,
+}: WeaponDetailProps) {
   const country = COUNTRIES[weapon.country];
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const briefing = buildCuratorBriefing(weapon);
@@ -187,6 +203,73 @@ export function WeaponDetail({ weapon }: WeaponDetailProps) {
           ))}
         </ul>
       </section>
+
+      {(countryCategoryLink || relatedLinks.length > 0 || comparisonLinks.length > 0 || battleLinks.length > 0) && (
+        <section className="mb-10">
+          <h2 className="font-display text-2xl text-military-gold tracking-wider mb-4 stencil-text">
+            CONTINUE RESEARCH
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {countryCategoryLink && (
+              <article className="rounded-lg border border-gray-800 bg-gray-900/45 p-4 sm:p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold mb-3">Country + Class</h3>
+                <Link href={countryCategoryLink.href} className="text-sm text-white hover:text-military-gold transition-colors">
+                  {countryCategoryLink.label}
+                </Link>
+                {countryCategoryLink.note && <p className="mt-2 text-xs text-gray-500">{countryCategoryLink.note}</p>}
+              </article>
+            )}
+
+            {relatedLinks.length > 0 && (
+              <article className="rounded-lg border border-gray-800 bg-gray-900/45 p-4 sm:p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold mb-3">Related Records</h3>
+                <ul className="space-y-2">
+                  {relatedLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="text-sm text-white hover:text-military-gold transition-colors">
+                        {link.label}
+                      </Link>
+                      {link.note && <p className="text-xs text-gray-500 mt-1">{link.note}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )}
+
+            {comparisonLinks.length > 0 && (
+              <article className="rounded-lg border border-gray-800 bg-gray-900/45 p-4 sm:p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold mb-3">Comparisons</h3>
+                <ul className="space-y-2">
+                  {comparisonLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="text-sm text-white hover:text-military-gold transition-colors">
+                        {link.label}
+                      </Link>
+                      {link.note && <p className="text-xs text-gray-500 mt-1">{link.note}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )}
+
+            {battleLinks.length > 0 && (
+              <article className="rounded-lg border border-gray-800 bg-gray-900/45 p-4 sm:p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold mb-3">Battle Context</h3>
+                <ul className="space-y-2">
+                  {battleLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="text-sm text-white hover:text-military-gold transition-colors">
+                        {link.label}
+                      </Link>
+                      {link.note && <p className="text-xs text-gray-500 mt-1">{link.note}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )}
+          </div>
+        </section>
+      )}
 
       {isLightboxOpen && (
         <div
