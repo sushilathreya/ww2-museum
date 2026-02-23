@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { BattleLoadoutExplorer } from '@/components/assets/BattleLoadoutExplorer';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { ResearchHomeLogo } from '@/components/layout/ResearchHomeLogo';
@@ -23,7 +24,7 @@ export default function BattleLoadoutMapsPage() {
       '@type': 'ListItem',
       position: index + 1,
       name: `${entry.title} loadout map`,
-      url: absoluteUrl(`/assets/battle-loadout-maps#${entry.slug}`),
+      url: absoluteUrl(`/assets/battle-loadout-maps?map=${entry.slug}`),
     })),
   };
 
@@ -33,7 +34,7 @@ export default function BattleLoadoutMapsPage() {
       <ResearchHomeLogo className="mb-5" />
 
       <header className="mb-8 rounded-xl border border-gray-800 bg-gradient-to-br from-gray-950 via-gray-900 to-black p-6 sm:p-8">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold">Phase 3 Linkable Asset</p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold">Interactive Research Resource</p>
         <h1 className="mt-2 font-display text-4xl text-white sm:text-5xl stencil-text">Battle Loadout Maps</h1>
         <p className="mt-3 max-w-3xl text-sm text-gray-300 sm:text-base">
           Filter by theater and year to inspect campaign loadouts. Each operational lane links directly to the source
@@ -41,7 +42,15 @@ export default function BattleLoadoutMapsPage() {
         </p>
       </header>
 
-      <BattleLoadoutExplorer maps={maps} />
+      <Suspense
+        fallback={
+          <div className="rounded-xl border border-gray-800 bg-gray-900/55 p-5 text-sm text-gray-300">
+            Loading battle maps...
+          </div>
+        }
+      >
+        <BattleLoadoutExplorer maps={maps} />
+      </Suspense>
     </main>
   );
 }

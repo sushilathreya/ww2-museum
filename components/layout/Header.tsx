@@ -101,7 +101,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
                 }
               `}
           >
-            ASSETS
+            RESOURCES
           </Link>
         </nav>
       </div>

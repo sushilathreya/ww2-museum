@@ -4,9 +4,9 @@ import { ResearchHomeLogo } from '@/components/layout/ResearchHomeLogo';
 import { absoluteUrl, buildPageMetadata } from '@/lib/seo';
 
 export const metadata = buildPageMetadata({
-  title: 'WW2 Linkable Assets - World War Weapons',
+  title: 'WW2 Research Resources - World War Weapons',
   description:
-    'Reference-ready WW2 assets: interactive timeline, printable weapon comparison sheets, and battle loadout maps by theater and year.',
+    'Reference-ready WW2 resources: interactive timeline, printable weapon comparison sheets, and battle loadout maps by theater and year.',
   path: '/assets',
 });
 
@@ -23,7 +23,7 @@ const assets = [
     slug: 'comparison-sheets',
     href: '/assets/comparison-sheets',
     title: 'Printable Comparison Sheets',
-    label: 'PDF-Friendly Asset',
+    label: 'PDF-Friendly Resource',
     description:
       'One-click printable sheets for major WW2 matchups with concise technical and doctrinal side-by-side summaries.',
   },
@@ -41,7 +41,7 @@ export default function AssetsHubPage() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'WW2 Linkable Assets',
+    name: 'WW2 Research Resources',
     url: absoluteUrl('/assets'),
     numberOfItems: assets.length,
     itemListElement: assets.map((asset, index) => ({
@@ -58,8 +58,8 @@ export default function AssetsHubPage() {
       <ResearchHomeLogo className="mb-5" />
 
       <header className="mb-8 rounded-xl border border-gray-800 bg-gradient-to-br from-gray-950 via-gray-900 to-black p-6 sm:p-8">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold">Phase 3 Assets</p>
-        <h1 className="mt-2 font-display text-4xl text-white sm:text-5xl stencil-text">Linkable Asset Library</h1>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-military-gold">Research Resources</p>
+        <h1 className="mt-2 font-display text-4xl text-white sm:text-5xl stencil-text">Research Resource Library</h1>
         <p className="mt-3 max-w-3xl text-sm text-gray-300 sm:text-base">
           Built for citation, classroom references, and history-community sharing. Each asset links back into primary
           weapon records for deeper research.
@@ -76,7 +76,7 @@ export default function AssetsHubPage() {
             <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-military-gold">{asset.label}</p>
             <h2 className="mt-2 font-display text-3xl text-white">{asset.title}</h2>
             <p className="mt-3 text-sm text-gray-300">{asset.description}</p>
-            <p className="mt-4 text-xs font-mono uppercase tracking-[0.14em] text-gray-500">Open asset &rarr;</p>
+            <p className="mt-4 text-xs font-mono uppercase tracking-[0.14em] text-gray-500">Open resource &rarr;</p>
           </Link>
         ))}
       </section>

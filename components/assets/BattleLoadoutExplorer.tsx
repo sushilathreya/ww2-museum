@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { BattleLoadoutMap } from '@/lib/data/phase3';
 import { CATEGORY_CONFIG } from '@/lib/types/weapon';
 import { assetPath, cn } from '@/lib/utils';
@@ -12,12 +13,17 @@ interface BattleLoadoutExplorerProps {
 }
 
 export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const mapParam = searchParams.get('map') ?? '';
+
   const theaters = useMemo(() => Array.from(new Set(maps.map((entry) => entry.theater))), [maps]);
   const years = useMemo(() => Array.from(new Set(maps.map((entry) => entry.year))).sort((a, b) => a - b), [maps]);
 
   const [theaterFilter, setTheaterFilter] = useState<string>('all');
   const [yearFilter, setYearFilter] = useState<string>('all');
-  const [activeSlug, setActiveSlug] = useState(maps[0]?.slug ?? '');
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
 
   const filteredMaps = useMemo(
     () =>
@@ -29,12 +35,35 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
     [maps, theaterFilter, yearFilter],
   );
 
-  useEffect(() => {
-    if (filteredMaps.some((entry) => entry.slug === activeSlug)) return;
-    setActiveSlug(filteredMaps[0]?.slug ?? '');
-  }, [filteredMaps, activeSlug]);
+  const activeMap = filteredMaps.find((entry) => entry.slug === mapParam) ?? filteredMaps[0];
 
-  const activeMap = filteredMaps.find((entry) => entry.slug === activeSlug) ?? filteredMaps[0];
+  useEffect(() => {
+    if (!activeMap || mapParam === activeMap.slug) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('map', activeMap.slug);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [activeMap, mapParam, pathname, router, searchParams]);
+
+  function setActiveMap(slug: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('map', slug);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }
+
+  async function copyActiveMapLink() {
+    if (!activeMap) return;
+
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('map', activeMap.slug);
+      await navigator.clipboard.writeText(url.toString());
+      setCopyState('copied');
+      window.setTimeout(() => setCopyState('idle'), 2000);
+    } catch {
+      setCopyState('error');
+      window.setTimeout(() => setCopyState('idle'), 2000);
+    }
+  }
 
   if (maps.length === 0 || !activeMap) {
     return (
@@ -95,7 +124,7 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
           <button
             key={entry.slug}
             type="button"
-            onClick={() => setActiveSlug(entry.slug)}
+            onClick={() => setActiveMap(entry.slug)}
             className={cn(
               'text-left rounded-lg border p-4 transition-colors',
               activeMap.slug === entry.slug
@@ -119,6 +148,16 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
         <h2 className="mt-2 font-display text-4xl text-white stencil-text">{activeMap.title}</h2>
         <p className="mt-3 max-w-4xl text-sm text-gray-300">{activeMap.summary}</p>
         <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={copyActiveMapLink}
+            className="rounded border border-military-gold/50 bg-military-gold/10 px-2.5 py-1 text-[11px] font-mono uppercase tracking-[0.12em] text-military-gold transition-colors hover:bg-military-gold/20"
+          >
+            {copyState === 'copied' ? 'Map Link Copied' : copyState === 'error' ? 'Copy Failed' : 'Copy Map Link'}
+          </button>
+          <span className="rounded border border-gray-700 bg-black/45 px-2.5 py-1 text-[11px] font-mono text-gray-400">
+            /assets/battle-loadout-maps?map={activeMap.slug}
+          </span>
           {activeMap.categoryCounts.map((entry) => (
             <span
               key={entry.category}
@@ -189,7 +228,7 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
             href="/timeline"
             className="rounded border border-gray-700 px-3 py-1.5 text-xs font-mono text-gray-300 transition-colors hover:text-military-gold"
           >
-            Timeline Asset
+            Timeline Resource
           </Link>
           <Link
             href="/assets/comparison-sheets"
@@ -197,6 +236,21 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
           >
             Printable Sheets
           </Link>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-xl border border-gray-800 bg-gray-900/40 p-4">
+        <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-military-gold">Direct Map Links</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {maps.map((entry) => (
+            <Link
+              key={`direct-${entry.slug}`}
+              href={`/assets/battle-loadout-maps?map=${entry.slug}`}
+              className="rounded border border-gray-700 px-3 py-1.5 text-xs font-mono text-gray-300 transition-colors hover:text-military-gold"
+            >
+              {entry.title} ({entry.year})
+            </Link>
+          ))}
         </div>
       </section>
     </div>
