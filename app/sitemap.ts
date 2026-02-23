@@ -61,6 +61,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.85,
     },
+    {
+      url: absoluteUrl('/assets'),
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.84,
+    },
+    {
+      url: absoluteUrl('/assets/comparison-sheets'),
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.83,
+    },
+    {
+      url: absoluteUrl('/assets/battle-loadout-maps'),
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.83,
+    },
   ];
 
   const phaseTwoRoutes: MetadataRoute.Sitemap = [
@@ -84,6 +102,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
+  const phaseThreeRoutes: MetadataRoute.Sitemap = comparisonClusters.map((cluster) => ({
+    url: absoluteUrl(`/assets/comparison-sheets/${cluster.slug}`),
+    lastModified,
+    changeFrequency: 'monthly' as const,
+    priority: 0.73,
+  }));
+
   const weaponRoutes: MetadataRoute.Sitemap = weapons.map((weapon) => ({
     url: absoluteUrl(`/${weapon.category}/${weapon.slug}`),
     lastModified,
@@ -91,5 +116,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...coreRoutes, ...phaseTwoRoutes, ...weaponRoutes];
+  return [...coreRoutes, ...phaseTwoRoutes, ...phaseThreeRoutes, ...weaponRoutes];
 }

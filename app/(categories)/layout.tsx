@@ -23,6 +23,7 @@ export default function CategoriesLayout({
     { href: '/compare', label: 'Comparisons' },
     { href: '/battles', label: 'Battle Hubs' },
     { href: '/country', label: 'Country + Class' },
+    { href: '/assets', label: 'Linkable Assets' },
   ];
 
   return (

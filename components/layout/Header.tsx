@@ -89,6 +89,20 @@ export function Header({ onMenuToggle }: HeaderProps) {
           >
             TOP 8
           </Link>
+          <Link
+            href="/assets"
+            className={`
+                text-xs font-mono uppercase tracking-wider px-3 py-1.5 rounded
+                transition-colors
+                ${
+                  pathname.startsWith('/assets')
+                    ? 'text-military-gold bg-military-gold/10'
+                    : 'text-gray-500 hover:text-white'
+                }
+              `}
+          >
+            ASSETS
+          </Link>
         </nav>
       </div>
     </header>
