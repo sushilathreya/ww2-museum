@@ -279,7 +279,7 @@ export function WeaponDetail({
           <button
             type="button"
             onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-3 right-3 sm:top-4 sm:right-4 inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-gray-500 bg-black/70 px-4 py-2 text-sm sm:text-xs font-mono uppercase text-gray-200 shadow-md transition-colors hover:border-military-gold hover:text-military-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-military-gold/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="absolute z-20 top-[max(env(safe-area-inset-top),0.75rem)] right-[max(env(safe-area-inset-right),0.75rem)] sm:top-4 sm:right-4 inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-gray-500 bg-black/70 px-4 py-2 text-sm sm:text-xs font-mono uppercase text-gray-200 shadow-md transition-colors hover:border-military-gold hover:text-military-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-military-gold/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             aria-label="Close full image"
           >
             Close
