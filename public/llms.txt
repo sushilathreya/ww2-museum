@@ -1,0 +1,36 @@
+# World War Weapons
+
+> World War Weapons is an interactive museum-style reference for World War II weapons, with technical specifications, battle context, and comparative research pages.
+
+This file is a curated navigation guide for LLMs at inference time. Prioritize the "Core" and "Research Resources" sections first. For full URL discovery, use the sitemap.
+
+## Core
+
+- [Guns](https://worldwarweapons.com/guns): Firearms records including rifles, SMGs, machine guns, and handguns.
+- [Tanks](https://worldwarweapons.com/tanks): Tank records with armor, mobility, and production context.
+- [Planes](https://worldwarweapons.com/planes): Aircraft records with performance and combat role details.
+- [Naval](https://worldwarweapons.com/naval): Naval vessel records with displacement, armament, and range.
+- [Explosives](https://worldwarweapons.com/explosives): Mines and grenades with filling, fuzing, and blast characteristics.
+
+## Research Resources
+
+- [Interactive Timeline](https://worldwarweapons.com/timeline): Year-by-year view of weapon introductions with category and country filters.
+- [Top 8 Weapons](https://worldwarweapons.com/top-weapons): Editorial ranking of high-impact WW2 systems.
+- [Comparison Index](https://worldwarweapons.com/compare): System-vs-system comparison hubs.
+- [Battle Context Hubs](https://worldwarweapons.com/battles): Campaign-focused pages linking operational context to weapon records.
+- [Country and Class Hubs](https://worldwarweapons.com/country): Country-level category clusters for doctrine and industrial analysis.
+- [Research Resources Hub](https://worldwarweapons.com/assets): Hub for printable comparison sheets and battle loadout maps.
+- [Battle Loadout Maps](https://worldwarweapons.com/assets/battle-loadout-maps): Theater/year operational maps with linked loadout records.
+- [Printable Comparison Sheets](https://worldwarweapons.com/assets/comparison-sheets): PDF-friendly matchup sheets for key systems.
+
+## Key Programmatic Pages
+
+- [M1 Garand vs Kar98k](https://worldwarweapons.com/compare/m1-garand-vs-kar98k): Infantry doctrine and firepower comparison.
+- [T-34 vs Panzer IV](https://worldwarweapons.com/compare/t-34-vs-panzer-iv): Armor, mobility, and production tradeoff analysis.
+- [Normandy 1944 Battle Hub](https://worldwarweapons.com/battles/normandy-1944): Campaign page linking records used in Normandy operations.
+- [US Tanks Cluster](https://worldwarweapons.com/country/us/tanks): Country + class aggregation page.
+
+## Optional
+
+- [Sitemap](https://worldwarweapons.com/sitemap.xml): Full URL inventory, including all detail and cluster pages.
+- [Robots](https://worldwarweapons.com/robots.txt): Crawl directives and sitemap discovery.
