@@ -43,3 +43,16 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+
+@page {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}

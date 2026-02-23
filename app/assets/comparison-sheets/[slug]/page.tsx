@@ -46,7 +46,7 @@ export default function PrintableComparisonSheetPage({ params }: PageProps) {
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 print:max-w-none print:px-0 print:py-0">
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 print:max-w-[186mm] print:px-0 print:py-0">
       <JsonLd data={schema} />
       <div className="print:hidden">
         <ResearchHomeLogo className="mb-4" />
@@ -61,18 +61,18 @@ export default function PrintableComparisonSheetPage({ params }: PageProps) {
 
       <PrintToolbar title="Printable Comparison Sheet" />
 
-      <article className="rounded-xl border border-gray-800 bg-gray-950/70 p-6 sm:p-8 print:rounded-none print:border-black print:bg-white print:p-8">
+      <article className="rounded-xl border border-gray-800 bg-gray-950/70 p-6 sm:p-8 print:rounded-none print:border-black print:bg-white print:p-4">
         <header className="border-b border-gray-800 pb-5 print:border-black">
           <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-military-gold print:text-black">
             World War Weapons • Printable Reference
           </p>
-          <h1 className="mt-2 font-display text-5xl text-white stencil-text print:text-black">{comparison.title}</h1>
+          <h1 className="mt-2 font-display text-5xl text-white stencil-text print:text-3xl print:tracking-normal print:text-black">{comparison.title}</h1>
           <p className="mt-3 max-w-4xl text-sm text-gray-300 print:text-black">{comparison.description}</p>
         </header>
 
-        <section className="mt-6 grid gap-5 md:grid-cols-2">
+        <section className="mt-6 grid gap-5 md:grid-cols-2 print:grid-cols-1">
           {[comparison.left, comparison.right].map((weapon) => (
-            <article key={weapon.id} className="rounded-lg border border-gray-800 bg-gray-900/55 p-4 print:border-black print:bg-white">
+            <article key={weapon.id} className="rounded-lg border border-gray-800 bg-gray-900/55 p-4 print:[break-inside:avoid-page] print:[page-break-inside:avoid] print:border-black print:bg-white">
               <div className="relative mb-3 aspect-[16/10] overflow-hidden rounded bg-black/45 print:border print:border-black print:bg-white">
                 <Image
                   src={assetPath(weapon.imageUrl)}
@@ -85,7 +85,7 @@ export default function PrintableComparisonSheetPage({ params }: PageProps) {
               <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-gray-500 print:text-black">
                 {COUNTRIES[weapon.country].name} • {CATEGORY_CONFIG[weapon.category].label}
               </p>
-              <h2 className="mt-1 font-display text-4xl text-white print:text-black">{weapon.name}</h2>
+              <h2 className="mt-1 font-display text-4xl text-white print:text-3xl print:text-black">{weapon.name}</h2>
               <p className="text-sm text-gray-400 print:text-black">{weapon.designation}</p>
 
               <dl className="mt-3 grid grid-cols-2 gap-2 text-xs font-mono">
@@ -114,9 +114,9 @@ export default function PrintableComparisonSheetPage({ params }: PageProps) {
           ))}
         </section>
 
-        <section className="mt-6 grid gap-5 md:grid-cols-2">
+        <section className="mt-6 grid gap-5 md:grid-cols-2 print:grid-cols-1">
           {[comparison.left, comparison.right].map((weapon) => (
-            <article key={`${weapon.id}-specs`} className="rounded-lg border border-gray-800 bg-gray-900/55 p-4 print:border-black print:bg-white">
+            <article key={`${weapon.id}-specs`} className="rounded-lg border border-gray-800 bg-gray-900/55 p-4 print:[break-inside:avoid-page] print:[page-break-inside:avoid] print:border-black print:bg-white">
               <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-military-gold print:text-black">
                 {weapon.name} Key Specs
               </h3>
@@ -132,11 +132,11 @@ export default function PrintableComparisonSheetPage({ params }: PageProps) {
           ))}
         </section>
 
-        <section className="mt-6 rounded-lg border border-gray-800 bg-gray-900/50 p-4 print:border-black print:bg-white">
+        <section className="mt-6 rounded-lg border border-gray-800 bg-gray-900/50 p-4 print:[break-inside:avoid-page] print:[page-break-inside:avoid] print:border-black print:bg-white">
           <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-military-gold print:text-black">
             Operational Tradeoff Summary
           </h3>
-          <div className="mt-3 grid gap-4 md:grid-cols-2">
+          <div className="mt-3 grid gap-4 md:grid-cols-2 print:grid-cols-1">
             <article className="rounded border border-gray-800 bg-black/25 p-3 print:border-black print:bg-white">
               <p className="text-xs font-mono uppercase tracking-[0.12em] text-gray-500 print:text-black">
                 {comparison.left.name}
