@@ -523,7 +523,7 @@ function getSpecRows(weapon: Weapon): [string, string][] {
       ['Engine', s.engine],
       ['Max Speed', `${s.maxSpeed} km/h`],
       ['Range', `${s.range} km`],
-      ['Production', s.productionCount.toLocaleString()],
+      ['Production', `${s.productionCount.toLocaleString()} built`],
     ];
   }
 
@@ -537,7 +537,7 @@ function getSpecRows(weapon: Weapon): [string, string][] {
       ['Service Ceiling', `${s.ceiling.toLocaleString()} m`],
       ['Armament', s.armament.join(', ')],
       ['Engine', s.engine],
-      ['Production', s.productionCount.toLocaleString()],
+      ['Production', `${s.productionCount.toLocaleString()} built`],
     ];
   }
 

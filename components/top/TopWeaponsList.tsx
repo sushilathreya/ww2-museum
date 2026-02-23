@@ -146,7 +146,7 @@ export function TopWeaponsList({ entries }: TopWeaponsListProps) {
             <li key={entry.weapon.id}>
               <Link
                 href={`/${entry.weapon.category}/${entry.weapon.slug}`}
-                className="group rounded-xl border border-gray-800 bg-gray-900/60 p-4 transition-colors hover:border-military-gold/60"
+                className="group block rounded-xl border border-gray-800 bg-gray-900/60 p-4 transition-colors hover:border-military-gold/60"
               >
                 <div className="flex items-start gap-4">
                   <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded border border-gray-800 bg-black/40 sm:h-28 sm:w-40">

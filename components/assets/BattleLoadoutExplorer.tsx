@@ -24,6 +24,7 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
   const [theaterFilter, setTheaterFilter] = useState<string>('all');
   const [yearFilter, setYearFilter] = useState<string>('all');
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [isMapOpen, setIsMapOpen] = useState(false);
 
   const filteredMaps = useMemo(
     () =>
@@ -43,6 +44,29 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
     params.set('map', activeMap.slug);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }, [activeMap, mapParam, pathname, router, searchParams]);
+
+  useEffect(() => {
+    setIsMapOpen(false);
+  }, [activeMap?.slug]);
+
+  useEffect(() => {
+    if (!isMapOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMapOpen(false);
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isMapOpen]);
 
   function setActiveMap(slug: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -167,6 +191,39 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
             </span>
           ))}
         </div>
+        <div className="mt-5">
+          <button
+            type="button"
+            onClick={() => setIsMapOpen(true)}
+            className="w-full cursor-zoom-in rounded-lg border border-gray-800 bg-black/30 text-left transition-colors hover:border-military-gold/40"
+            aria-label={`Open full map for ${activeMap.title}`}
+          >
+            <div className="relative aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-lg">
+              <Image
+                src={assetPath(activeMap.mapImageUrl)}
+                alt={activeMap.mapAlt}
+                fill
+                className="object-contain p-2 sm:p-4"
+                sizes="(max-width: 1024px) 100vw, 900px"
+              />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 to-transparent" />
+              <p className="absolute bottom-2 right-3 text-[10px] font-mono text-gray-300 sm:text-xs">
+                CLICK TO EXPAND MAP
+              </p>
+            </div>
+          </button>
+          <p className="mt-2 text-xs text-gray-500">
+            Map source:{' '}
+            <Link
+              href={activeMap.mapSourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-military-gold transition-colors hover:text-white"
+            >
+              {activeMap.mapSourceLabel}
+            </Link>
+          </p>
+        </div>
       </section>
 
       <section className="mb-6 grid gap-4 lg:grid-cols-3">
@@ -253,6 +310,32 @@ export function BattleLoadoutExplorer({ maps }: BattleLoadoutExplorerProps) {
           ))}
         </div>
       </section>
+
+      {isMapOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 p-4 backdrop-blur-sm sm:p-8"
+          onClick={() => setIsMapOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setIsMapOpen(false)}
+            className="absolute z-20 right-[max(env(safe-area-inset-right),0.75rem)] top-[max(env(safe-area-inset-top),0.75rem)] inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-gray-500 bg-black/70 px-4 py-2 font-mono text-sm uppercase text-gray-200 shadow-md transition-colors hover:border-military-gold hover:text-military-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-military-gold/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:right-4 sm:top-4 sm:text-xs"
+            aria-label="Close full map"
+          >
+            Close
+          </button>
+          <div className="relative h-full w-full" onClick={(event) => event.stopPropagation()}>
+            <Image
+              src={assetPath(activeMap.mapImageUrl)}
+              alt={activeMap.mapAlt}
+              fill
+              className="object-contain"
+              sizes="100vw"
+              priority
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -30,7 +30,7 @@ export function buildComparisonSpecRows(weapon: Weapon): [string, string][] {
       ['Armor (front)', `${s.armor.front} mm`],
       ['Max Speed', `${s.maxSpeed} km/h`],
       ['Range', `${s.range} km`],
-      ['Production', `${s.productionCount.toLocaleString()}`],
+      ['Production', `${s.productionCount.toLocaleString()} built`],
     ];
   }
 
@@ -43,7 +43,7 @@ export function buildComparisonSpecRows(weapon: Weapon): [string, string][] {
       ['Ceiling', `${s.ceiling} m`],
       ['Engine', s.engine],
       ['Armament', s.armament.slice(0, 2).join(' • ')],
-      ['Production', `${s.productionCount.toLocaleString()}`],
+      ['Production', `${s.productionCount.toLocaleString()} built`],
     ];
   }
 
@@ -52,8 +52,8 @@ export function buildComparisonSpecRows(weapon: Weapon): [string, string][] {
     return [
       ['Displacement', `${s.displacement.toLocaleString()} t`],
       ['Length', `${s.length} m`],
-      ['Top Speed', `${s.speed}`],
-      ['Range', `${s.range.toLocaleString()}`],
+      ['Top Speed', `${s.speed} knots`],
+      ['Range', `${s.range.toLocaleString()} nmi`],
       ['Crew', `${s.crew.toLocaleString()}`],
       ['Main Armament', s.armament.slice(0, 2).join(' • ')],
       ['Armor', `Belt ${s.armor.belt} mm • Deck ${s.armor.deck} mm`],

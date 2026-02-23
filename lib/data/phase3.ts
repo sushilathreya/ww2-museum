@@ -14,6 +14,10 @@ interface BattleLoadoutDefinition {
   theater: string;
   year: number;
   summary: string;
+  mapImageUrl: string;
+  mapAlt: string;
+  mapSourceLabel: string;
+  mapSourceUrl: string;
   lanes: LoadoutLaneDefinition[];
 }
 
@@ -23,6 +27,10 @@ const battleLoadoutDefinitions: BattleLoadoutDefinition[] = [
     theater: 'Mediterranean and North Africa',
     year: 1942,
     summary: 'Desert maneuver warfare emphasized mobility, long-range gunnery, and resilient logistics lines.',
+    mapImageUrl: '/battle-maps/north-africa.jpg',
+    mapAlt: 'Campaign map showing Operation Torch landings and North Africa operations in 1942.',
+    mapSourceLabel: 'Operation Torch - map (Wikimedia Commons)',
+    mapSourceUrl: 'https://commons.wikimedia.org/wiki/File:Operation_Torch_-_map.jpg',
     lanes: [
       {
         id: 'armor-spearhead',
@@ -49,6 +57,10 @@ const battleLoadoutDefinitions: BattleLoadoutDefinition[] = [
     theater: 'Eastern Front',
     year: 1942,
     summary: 'Urban attrition forced close-quarters doctrine, resilient assault groups, and high-ammo sustainment.',
+    mapImageUrl: '/battle-maps/stalingrad.svg',
+    mapAlt: 'Operational map of the Battle of Stalingrad and surrounding movements.',
+    mapSourceLabel: 'Map Battle of Stalingrad-en (Wikimedia Commons)',
+    mapSourceUrl: 'https://commons.wikimedia.org/wiki/File:Map_Battle_of_Stalingrad-en.svg',
     lanes: [
       {
         id: 'urban-assault',
@@ -75,6 +87,10 @@ const battleLoadoutDefinitions: BattleLoadoutDefinition[] = [
     theater: 'Atlantic Ocean',
     year: 1943,
     summary: 'Convoy warfare centered on escort coordination, submarine stealth cycles, and anti-submarine adaptation.',
+    mapImageUrl: '/battle-maps/battle-of-the-atlantic.svg',
+    mapAlt: 'Map showing convoy routes and strategic zones in the Battle of the Atlantic.',
+    mapSourceLabel: 'The battle of the Atlantic 1941 map (Wikimedia Commons)',
+    mapSourceUrl: 'https://commons.wikimedia.org/wiki/File:The_battle_of_the_Atlantic_1941_map.svg',
     lanes: [
       {
         id: 'submarine-threat',
@@ -101,6 +117,10 @@ const battleLoadoutDefinitions: BattleLoadoutDefinition[] = [
     theater: 'Eastern Front',
     year: 1943,
     summary: 'Layered defense and armored counterstroke defined one of history’s largest tank engagements.',
+    mapImageUrl: '/battle-maps/kursk.jpg',
+    mapAlt: 'Battle map of Kursk showing offensive sectors and front lines.',
+    mapSourceLabel: 'Battle of Kursk (map) (Wikimedia Commons)',
+    mapSourceUrl: 'https://commons.wikimedia.org/wiki/File:Battle_of_Kursk_(map).jpg',
     lanes: [
       {
         id: 'anti-armor-line',
@@ -127,6 +147,10 @@ const battleLoadoutDefinitions: BattleLoadoutDefinition[] = [
     theater: 'Western Europe',
     year: 1944,
     summary: 'Combined-arms doctrine synchronized naval firepower, armored mobility, and air superiority during the breakout.',
+    mapImageUrl: '/battle-maps/normandy-1944.jpg',
+    mapAlt: 'Allied invasion force map for Normandy and Operation Overlord.',
+    mapSourceLabel: 'Allied Invasion Force (Wikimedia Commons)',
+    mapSourceUrl: 'https://commons.wikimedia.org/wiki/File:Allied_Invasion_Force.jpg',
     lanes: [
       {
         id: 'beachhead-entry',
@@ -159,6 +183,10 @@ const battleLoadoutDefinitions: BattleLoadoutDefinition[] = [
     theater: 'Western Europe',
     year: 1944,
     summary: 'Winter operations rewarded logistical resilience, anti-armor flexibility, and adaptive close support.',
+    mapImageUrl: '/battle-maps/battle-of-the-bulge.svg',
+    mapAlt: 'Operational plan map for Wacht am Rhein and Battle of the Bulge sectors.',
+    mapSourceLabel: 'Wacht am Rhein map (Opaque) (Wikimedia Commons)',
+    mapSourceUrl: 'https://commons.wikimedia.org/wiki/File:Wacht_am_Rhein_map_(Opaque).svg',
     lanes: [
       {
         id: 'shock-thrust',
@@ -208,6 +236,10 @@ export interface BattleLoadoutMap {
   theater: string;
   year: number;
   summary: string;
+  mapImageUrl: string;
+  mapAlt: string;
+  mapSourceLabel: string;
+  mapSourceUrl: string;
   categoryCounts: { category: WeaponCategory; label: string; count: number }[];
   featuredWeapons: LoadoutWeaponCard[];
   lanes: BattleLoadoutLane[];
@@ -282,6 +314,10 @@ export function getBattleLoadoutMaps(): BattleLoadoutMap[] {
         theater: definition.theater,
         year: definition.year,
         summary: definition.summary,
+        mapImageUrl: definition.mapImageUrl,
+        mapAlt: definition.mapAlt,
+        mapSourceLabel: definition.mapSourceLabel,
+        mapSourceUrl: definition.mapSourceUrl,
         categoryCounts,
         featuredWeapons: linkedWeapons.slice(0, 8).map(toWeaponCard),
         lanes,
